@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,8 +16,8 @@ public class UserService {
     @Autowired
     UserRepository userRepository; // el repositorio de la clase
 
-    public ArrayList<UserModel> getUsers(){
-        return (ArrayList<UserModel>) userRepository.findAll(); // muestra todo
+    public List<UserModel> getUsers(){
+        return userRepository.findAll(); // muestratodo
     }
     public UserModel saveUser(UserModel user){
         return userRepository.save(user);

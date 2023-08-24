@@ -7,45 +7,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping
-    public ArrayList<UserModel> getUsers(){
-        return this.userService.getUsers();
-    }
-
-    @PostMapping
+    UserService userService;
+    //@Autowired //private UserRepository userRepository;
+    @PostMapping()
     public UserModel saveUser(@RequestBody UserModel user){
-        return this.userService.saveUser(user);
+        return userService.saveUser(user);
+    }
+    @GetMapping()
+    public List<UserModel> getUsers(){
+        return userService.getUsers();
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public Optional<UserModel> getUserById(@PathVariable Long id){
-        return this.userService.getById(id);
+        return userService.getById(id);
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping("/{id}")
     public UserModel updateUserById(@RequestBody UserModel request, @PathVariable Long id){
-        return this.userService.updateById(request,id);
+        return userService.updateById(request,id);
     }
 
     @DeleteMapping(path = "/{id}")
     public String deleteById(@PathVariable("id") Long id){
+        try{
+            userService.deleteUser(id);
+            return "User with id " + id + " deleted";
+        } catch (Exception e){
+            return "User with id " + id + " not found";
+        }
+        /*
         boolean ok = this.userService.deleteUser(id);
 
-        if(ok){
+        if (ok) {
             return "User with id " + id + " deleted";
-        } else{
-            return "Error with id " + id;
-        }
+        } else {
+            return "User with id " + id + " not found";
+        }*/
+
     }
 
 }
